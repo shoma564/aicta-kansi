@@ -1,0 +1,231 @@
+global:
+  scrape_interval:     15s 
+  evaluation_interval: 15s 
+  external_labels:
+      monitor: 'codelab-monitor'
+
+rule_files:
+  - /etc/prometheus/alert.rules
+
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+      - targets:
+        - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets:
+        -  prometheus:9090
+        -  node-exporter:9100
+
+
+  - job_name: 'RTX1210'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.254'
+
+
+  - job_name: 'RTX3500'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.253'
+
+  - job_name: 'RTX1210(312)'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.252'
+
+  - job_name: 'RTX1210(111)'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.251'
+
+  - job_name: 'NCS5501-SE'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.1'
+
+  - job_name: 'XRv9000'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.2'
+
+  - job_name: 'SRX1500-1'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.3'
+
+  - job_name: 'SRX1500-2'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.4'
+
+  - job_name: 'SRX1500-3'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.5'
+
+  - job_name: 'SRX1500-4'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.6'
+
+
+  - job_name: 'Ag9032v2'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.7'
+
+  - job_name: 'Ag9032v2a'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.8'
+
+  - job_name: 'QFX5110-48S'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.9'
+
+  - job_name: 'AG7648'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.10'
+
+  - job_name: 'SRX1500-5'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.100'
+
+  - job_name: 'Cat2960X'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.101'
+
+  - job_name: 'IX2215'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.102'
+
+  - job_name: 'wlc'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.103'
+
+  - job_name: 'Aironet1832-1'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.104'
+
+  - job_name: 'Aironet1832-2'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.105'
+
+  - job_name: 'ngn-tunnel'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '10.254.0.200'
+
+
+  - job_name: 'Internet'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - '1.1.1.1'
+        - '8.8.8.8'
+
+
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115
+
+
+#    - job_name: 'snmp'
+#      static_configs:
+#        - targets:
+#            - 【Router IP Address】
+#      metrics_path: /snmp
+#      params:
+#        module: [cisco]
+#      relabel_configs:
+#        - source_labels: [__address__]
+#          target_label: __param_target
+#        - source_labels: [__param_target]
+#          target_label: instance
+#        - target_label: __address__
+#          replacement: snmp_exporter:9116
+
+
